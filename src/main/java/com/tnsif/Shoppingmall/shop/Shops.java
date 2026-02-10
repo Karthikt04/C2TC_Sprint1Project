@@ -16,6 +16,14 @@ private Long id;
 private String shopName;
 private String category;
 private int floorNumber;
+@Override
+public String toString() {
+	return "Shops [id=" + id + ", shopName=" + shopName + ", category=" + category + ", floorNumber=" + floorNumber
+			+ ", ownerName=" + ownerName + ", status=" + status + "]";
+}
+public Shops() {
+	super();
+}
 private String ownerName;
 private String status;
 

@@ -2,16 +2,13 @@ package com.tnsif.Shoppingmall.admin;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import com.tnsif.Shoppingmall.shop.Shops;
 import com.tnsif.Shoppingmall.shop.ShopsRepository;
 import com.tnsif.Shoppingmall.employee.Employee;
 import com.tnsif.Shoppingmall.employee.EmployeeRepository;
-
 
 @Service
 public class MallAdminService {
@@ -25,24 +22,30 @@ public class MallAdminService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    
-    private boolean isAdminLoggedIn = false;
+    private static boolean isAdminLoggedIn = false;
 
-    public MallAdmin login(String username, String password) {
-        MallAdmin admin = adminRepository.findByUsernameAndPassword(username, password);
-        
-        if (admin != null) {
-            isAdminLoggedIn = true;
+    public void login(String username, String password) {
+        MallAdmin admin =
+            adminRepository.findByUsernameAndPassword(username, password);
+
+        if (admin == null) {
+            throw new UnauthorizedException("Invalid admin credentials");
         }
-        return admin;
+
+        isAdminLoggedIn = true;
+    }
+    
+    public void logout() {
+        isAdminLoggedIn = false;
     }
 
     private void checkLogin() {
         if (!isAdminLoggedIn) {
-            throw new UnauthorizedException("Please login as admin to access this resource");
+            throw new UnauthorizedException(
+                "Please login as admin to access this resource"
+            );
         }
     }
-
 
     public List<Shops> getAllShops() {
         checkLogin();
@@ -67,7 +70,6 @@ public class MallAdminService {
     public Shops rejectShop(Long id) {
         checkLogin();
         Shops shop = shopsRepository.findById(id).orElse(null);
-        
         if (shop != null) {
             shop.setStatus("REJECTED");
             return shopsRepository.save(shop);

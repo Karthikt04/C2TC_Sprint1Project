@@ -15,9 +15,16 @@ private Long id;
 
 private String name;
 private String designation;
+@Override
+public String toString() {
+	return "Employee [id=" + id + ", name=" + name + ", designation=" + designation + ", salary=" + salary + "]";
+}
 private double salary;
 
 
+public Employee() {
+	super();
+}
 public Long getId() {
 	return id;
 }
