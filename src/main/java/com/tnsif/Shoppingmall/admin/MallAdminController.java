@@ -53,4 +53,19 @@ public class MallAdminController {
     public List<Employee> viewEmployees() {
         return adminService.getAllEmployees();
     }
+    
+    @PostMapping("/employees")
+    public Employee addEmployee(@RequestBody Employee employee) {
+        return adminService.addEmployee(employee);
+    }
+
+    @PutMapping("/employees/{id}")
+    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
+        return adminService.updateEmployee(id, employee);
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public void deleteEmployee(@PathVariable Long id) {
+        adminService.deleteEmployee(id);
+    }
 }

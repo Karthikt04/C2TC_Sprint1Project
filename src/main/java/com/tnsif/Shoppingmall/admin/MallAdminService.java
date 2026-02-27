@@ -81,4 +81,30 @@ public class MallAdminService {
         checkLogin();
         return employeeRepository.findAll();
     }
+    
+    public Employee addEmployee(Employee employee) {
+        checkLogin();
+        return employeeRepository.save(employee);
+    }
+
+    public Employee updateEmployee(Long id, Employee updatedEmployee) {
+        checkLogin();
+
+        Employee employee = employeeRepository.findById(id).orElse(null);
+
+        if (employee != null) {
+            employee.setName(updatedEmployee.getName());
+            employee.setDesignation(updatedEmployee.getDesignation());
+            employee.setSalary(updatedEmployee.getSalary());
+            employee.setShop(updatedEmployee.getShop());
+            return employeeRepository.save(employee);
+        }
+
+        return null;
+    }
+
+    public void deleteEmployee(Long id) {
+        checkLogin();
+        employeeRepository.deleteById(id);
+    }
 }
