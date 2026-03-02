@@ -1,0 +1,71 @@
+package com.codebots.shoppingmall.admin;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.codebots.shoppingmall.shop.Shops;
+import com.codebots.shoppingmall.employee.Employee;
+
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/admin")
+public class MallAdminController {
+
+    @Autowired
+    private MallAdminService adminService;
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody MallAdmin admin) {
+        adminService.login(admin.getUsername(), admin.getPassword());
+        return ResponseEntity.ok("Login successful");
+    }
+    
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout() {
+        adminService.logout();
+        return ResponseEntity.ok("Logged out successfully");
+    }
+
+    @GetMapping("/shops")
+    public List<Shops> viewAllShops() {
+        return adminService.getAllShops();
+    }
+
+    @GetMapping("/shops/pending")
+    public List<Shops> viewPendingShops() {
+        return adminService.getPendingShops();
+    }
+
+    @PutMapping("/shops/{id}/approve")
+    public Shops approveShop(@PathVariable Long id) {
+        return adminService.approveShop(id);
+    }
+
+    @PutMapping("/shops/{id}/reject")
+    public Shops rejectShop(@PathVariable Long id) {
+        return adminService.rejectShop(id);
+    }
+
+    @GetMapping("/employees")
+    public List<Employee> viewEmployees() {
+        return adminService.getAllEmployees();
+    }
+    
+    @PostMapping("/employees")
+    public Employee addEmployee(@RequestBody Employee employee) {
+        return adminService.addEmployee(employee);
+    }
+
+    @PutMapping("/employees/{id}")
+    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
+        return adminService.updateEmployee(id, employee);
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public void deleteEmployee(@PathVariable Long id) {
+        adminService.deleteEmployee(id);
+    }
+}
